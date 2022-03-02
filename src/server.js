@@ -47,4 +47,14 @@ app.post('/login', (req, res) => {
   }
 });
 
+app.post('/register', (req, res) => {
+  const { username, password } = req.body;
+  const newUser = {
+    username,
+    password,
+  };
+  users.push(newUser);
+  res.send('Register success');
+});
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

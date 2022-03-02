@@ -8,6 +8,14 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username": "James",
-    "password": "jam"
+    "username": "Jill",
+    "password": "jill123"
+}
+###
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "username": "Jill",
+    "password": "jill123"
 }
