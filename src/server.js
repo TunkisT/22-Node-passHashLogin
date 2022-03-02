@@ -37,4 +37,14 @@ app.get('/users/:username', (req, res) => {
   res.json(userObjFound);
 });
 
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const userObjFound = users.find((userObj) => userObj.username === username);
+  if (userObjFound && password === userObjFound.password) {
+    res.json('Login success');
+  } else {
+    res.status(400).send('username or password not match');
+  }
+});
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

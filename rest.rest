@@ -3,3 +3,11 @@ GET http://localhost:3000/users
 ###
 GET http://localhost:3000/users/Mike
 
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "James",
+    "password": "jam"
+}
