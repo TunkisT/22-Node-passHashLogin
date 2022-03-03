@@ -39,21 +39,56 @@ app.get('/users/:username', (req, res) => {
   res.json(userObjFound);
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  const userObjFound = users.find((userObj) => userObj.username === username);
-  // if (bcrypt.compareSync(password, userObjFound.password)) {
-  //   console.log('sutampa');
-  // }
-  if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
-    res.json('Login success');
-  } else {
-    res.status(400).send('username or password not match');
+
+  const schemaLogin = Joi.object({
+    username: Joi.string().min(3).max(30).required(),
+    password: Joi.string().min(5).max(30).required(),
+  });
+
+  try {
+    await schemaLogin.validateAsync(req.body, { abortEarly: false });
+  } catch (error) {
+    console.log('error ===', error);
+    console.log('Klaida validuojant login');
+    res.status(400).json({
+      error: 'Please check inputs',
+      errors: error.details.map((dtl) => dtl.message),
+    });
+    return;
   }
+  res.json(req.body);
+
+  // const userObjFound = users.find((userObj) => userObj.username === username);
+
+  // if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
+  //   res.json('Login success');
+  // } else {
+  //   res.status(400).send('username or password not match');
+  // }
 });
 
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
   const { username, password } = req.body;
+
+  const schemaLogin = Joi.object({
+    username: Joi.string().min(3).max(30).required(),
+    password: Joi.string().min(5).max(30).required(),
+  });
+
+  try {
+    await schemaLogin.validateAsync(req.body, { abortEarly: false });
+  } catch (error) {
+    console.log('error ===', error);
+    console.log('Klaida validuojant register');
+    res.status(400).json({
+      error: 'Please check inputs',
+      errors: error.details.map((dtl) => dtl.message),
+    });
+    return;
+  }
+
   const passHash = bcrypt.hashSync(password, 10);
 
   console.log('passHash ===', passHash);
@@ -63,26 +98,33 @@ app.post('/register', (req, res) => {
     password: passHash,
   };
   users.push(newUser);
-  res.send(passHash);
+  // res.send(passHash);
+  res.json(req.body)
 });
 
 const schema = Joi.object({
   email: Joi.string().email().required(),
-  town: Joi.string().min(4).max(30).pattern(new RegExp('[a-zA-Z]')).required(),
+  town: Joi.string().min(4).max(30).pattern(new RegExp('[a-zA-Z]$')).required(),
   age: Joi.number().min(18).max(200).required(),
   gender: Joi.string().valid('male', 'female', 'other').required(),
 });
 
-app.post('/validate', (req, res) => {
+app.post('/validate', async (req, res) => {
   const userData = req.body;
+
   try {
-    userData = schema.validateAsync(userData);
-    res.json(userData);
-    return;
+    await schema.validateAsync(userData, { abortEarly: false });
   } catch (error) {
-    console.log(error);
-    res.send(error, 'Incorect data');
+    console.log('error ===', error);
+    console.log('Klaida validuojant');
+    res.status(400).json({
+      error: 'Please check inputs',
+      errors: error.details.map((dtl) => dtl.message),
+    });
+    return;
   }
+
+  res.json(userData);
 });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
