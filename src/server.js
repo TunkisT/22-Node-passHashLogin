@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
+const { validateUser } = require('./middleware');
 
 // const mysql = require('mysql2/promise');
 // const dbConfig = require('./dbConfig');
@@ -28,6 +29,14 @@ const users = [
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
+app.use(printBody);
+
+function printBody(req, res, next) {
+  if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
+    console.log('Request body we got:', req.body);
+  }
+  next();
+}
 
 app.get('/users', (req, res) => {
   res.json(users);
@@ -39,25 +48,9 @@ app.get('/users/:username', (req, res) => {
   res.json(userObjFound);
 });
 
-app.post('/login', async (req, res) => {
+app.post('/login', validateUser, async (req, res) => {
   const { username, password } = req.body;
 
-  const schemaLogin = Joi.object({
-    username: Joi.string().min(3).max(30).required(),
-    password: Joi.string().min(5).max(30).required(),
-  });
-
-  try {
-    await schemaLogin.validateAsync(req.body, { abortEarly: false });
-  } catch (error) {
-    console.log('error ===', error);
-    console.log('Klaida validuojant login');
-    res.status(400).json({
-      error: 'Please check inputs',
-      errors: error.details.map((dtl) => dtl.message),
-    });
-    return;
-  }
   res.json(req.body);
 
   // const userObjFound = users.find((userObj) => userObj.username === username);
@@ -69,25 +62,8 @@ app.post('/login', async (req, res) => {
   // }
 });
 
-app.post('/register', async (req, res) => {
+app.post('/register', validateUser, async (req, res) => {
   const { username, password } = req.body;
-
-  const schemaLogin = Joi.object({
-    username: Joi.string().min(3).max(30).required(),
-    password: Joi.string().min(5).max(30).required(),
-  });
-
-  try {
-    await schemaLogin.validateAsync(req.body, { abortEarly: false });
-  } catch (error) {
-    console.log('error ===', error);
-    console.log('Klaida validuojant register');
-    res.status(400).json({
-      error: 'Please check inputs',
-      errors: error.details.map((dtl) => dtl.message),
-    });
-    return;
-  }
 
   const passHash = bcrypt.hashSync(password, 10);
 
@@ -99,7 +75,7 @@ app.post('/register', async (req, res) => {
   };
   users.push(newUser);
   // res.send(passHash);
-  res.json(req.body)
+  res.json(req.body);
 });
 
 const schema = Joi.object({

@@ -9,7 +9,7 @@ Content-Type: application/json
 
 {
     "username": "Jill",
-    "password": "jjjjj"
+    "password": "jjj55"
 }
 ###
 POST http://localhost:3000/register
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
     "username": "Jill",
-    "password": "jkk"
+    "password": "jkk55"
 }
 ###
 POST http://localhost:3000/validate
