@@ -19,3 +19,13 @@ Content-Type: application/json
     "username": "Jill",
     "password": "jill123"
 }
+###
+POST http://localhost:3000/validate
+Content-Type: application/json
+
+{
+    "email": "james@james.com",
+    "town": "Vilnius",
+    "age": 25,
+    "gender": "male"
+}
