@@ -84,7 +84,10 @@ app.post('/register', validateUser, async (req, res) => {
     res.status(500);
     return;
   }
-  res.json(addResult);
+  res.json({
+    success: true,
+    msg: 'User registered',
+  });
 });
 
 const schema = Joi.object({

@@ -23,11 +23,12 @@ async function registerUser(registerData) {
   console.log('respInJs ===', respInJs);
 
   if (respInJs.success === false) {
-    handelErrors(respInJs.errors);
+    handelErrors(respInJs.errors);S
   }
 
   if (respInJs.success === true) {
-    window.location.replace('login.html');
+    alert(`${respInJs.msg}`);
+    window.location.replace('index.html');
   }
 }
 function handelErrors(errorArray) {
