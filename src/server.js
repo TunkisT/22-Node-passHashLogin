@@ -59,7 +59,7 @@ app.post('/login', validateUser, async (req, res) => {
   if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
     res.json({
       success: true,
-      message: 'Login successful',
+      msg: 'Login successful',
     });
   } else {
     res.status(400).json({

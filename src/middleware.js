@@ -16,7 +16,7 @@ async function validateUser(req, res, next) {
     }));
     const responseToSend = {
       success: false,
-      err: formatedError,
+      errors: formatedError,
     };
     res.status(400).json(responseToSend);
   }
