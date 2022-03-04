@@ -52,17 +52,23 @@ app.get('/users/:username', (req, res) => {
 app.post('/login', validateUser, async (req, res) => {
   const { username, password } = req.body;
 
-
   const [userObjFound] = await findUserByUsername(username);
 
-  console.log('userObjFound ===',[ userObjFound]);
+  console.log('userObjFound ===', [userObjFound]);
 
   if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
-    res.json('Login success');
+    res.json({
+      success: true,
+      message: 'Login successful',
+    });
   } else {
-    res.status(400).send('username or password not match');
+    res.status(400).json({
+      success: false,
+      errors: {
+        message: 'password or username do not match',
+      },
+    });
   }
-
 });
 
 app.post('/register', validateUser, async (req, res) => {

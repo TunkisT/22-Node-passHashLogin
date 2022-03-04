@@ -10,12 +10,15 @@ async function validateUser(req, res, next) {
     await schemaLogin.validateAsync(req.body, { abortEarly: false });
     next();
   } catch (error) {
-    console.log('error ===', error);
-    console.log('Klaida validuojant middleware');
-    res.status(400).json({
-      error: 'Please check inputs',
-      errors: error.details.map((dtl) => dtl.message),
-    });
+    const formatedError = error.details.map((detail) => ({
+      field: detail.context.key,
+      message: detail.message,
+    }));
+    const responseToSend = {
+      success: false,
+      err: formatedError,
+    };
+    res.status(400).json(responseToSend);
   }
 }
 module.exports = {
