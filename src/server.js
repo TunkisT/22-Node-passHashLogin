@@ -4,6 +4,7 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const { validateUser } = require('./middleware');
+const { addUserDb, findUserByUsername } = require('./model/usermodel');
 
 // const mysql = require('mysql2/promise');
 // const dbConfig = require('./dbConfig');
@@ -51,31 +52,33 @@ app.get('/users/:username', (req, res) => {
 app.post('/login', validateUser, async (req, res) => {
   const { username, password } = req.body;
 
-  res.json(req.body);
 
-  // const userObjFound = users.find((userObj) => userObj.username === username);
+  const [userObjFound] = await findUserByUsername(username);
 
-  // if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
-  //   res.json('Login success');
-  // } else {
-  //   res.status(400).send('username or password not match');
-  // }
+  console.log('userObjFound ===',[ userObjFound]);
+
+  if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
+    res.json('Login success');
+  } else {
+    res.status(400).send('username or password not match');
+  }
+
 });
 
 app.post('/register', validateUser, async (req, res) => {
   const { username, password } = req.body;
-
   const passHash = bcrypt.hashSync(password, 10);
-
-  console.log('passHash ===', passHash);
 
   const newUser = {
     username,
     password: passHash,
   };
-  users.push(newUser);
-  // res.send(passHash);
-  res.json(req.body);
+  const addResult = await await addUserDb(newUser);
+  if (addResult === false) {
+    res.status(500);
+    return;
+  }
+  res.json(addResult);
 });
 
 const schema = Joi.object({
