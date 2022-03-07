@@ -1,4 +1,8 @@
-const { getPostsFromDb, getPostsByCatId } = require('../model/postModel');
+const {
+  getPostsFromDb,
+  getPostsByCatId,
+  deletePostById,
+} = require('../model/postModel');
 
 async function getPosts(req, res) {
   const allPosts = await getPostsFromDb();
@@ -19,7 +23,21 @@ async function postsByCatId(req, res) {
   res.json(onePost);
 }
 
+async function deletePost(req, res) {
+  const { id } = req.params;
+  const onePost = await deletePostById(id);
+  if (onePost === false) {
+    res.status(500);
+    return;
+  }
+  if (onePost.affectedRows !== 1) {
+    res.json('No cars deleted');
+  }
+  res.json('Delete successful');
+}
+
 module.exports = {
   getPosts,
   postsByCatId,
+  deletePost,
 };

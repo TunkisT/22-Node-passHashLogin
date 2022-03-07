@@ -35,11 +35,28 @@ async function getPostsByCatId(categoryId) {
     await connection.close();
     return result;
   } catch (error) {
-    console.log('getPostsByCatFromDb =', error);
+    console.log('getPostsByCatId =', error);
+  }
+}
+
+async function deletePostById(deleteId) {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    console.log('deleteId ===', deleteId);
+    const sql = `
+      DELETE FROM posts WHERE post_id = ?
+      `;
+
+    const [result] = await connection.query(sql, [deleteId]);
+    await connection.close();
+    return result;
+  } catch (error) {
+    console.log('deletePostById =', error);
   }
 }
 
 module.exports = {
   getPostsFromDb,
   getPostsByCatId,
+  deletePostById,
 };
