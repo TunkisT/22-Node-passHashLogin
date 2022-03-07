@@ -34,10 +34,12 @@
         <div class="cards">
             <h1>Write post</h1>
             <form class="forma">
+                <label for="title">TITLE:</label>
                 <input type="text" name="title" id="title" placeholder="title">
+                <label for="body">POST TEXT:</label>
                 <input type="text" name="body" id="body" placeholder="body" >
                 <label>Select post category:
-                    <select class="categories" name="categories" multiple size="5">
+                    <select class="categories" name="categories" multiple size="5" required>
                     </select>
                   </label>
                 <input type="submit" value="Submit" class="submit">

@@ -3,6 +3,10 @@ const allPosts = document.querySelector('.all-posts');
 const addPosts = document.querySelector('.add-post');
 const categories = document.querySelector('.categories');
 
+addPosts.addEventListener('click', (event) => {
+  event.preventDefault();
+});
+
 function createCategories() {
   fetch('http://localhost:3000/categories')
     .then((res) => res.json())
@@ -54,23 +58,30 @@ allPosts.addEventListener('click', (event) => {
   createPosts();
 });
 
+function addForm() {
+  const postForm = document.querySelector('.forma');
+  postForm.addEventListener('submit', (event) => {
+    console.log('veikia');
+    const postData = {
+      title: event.target.elements.title.value,
+      body: event.target.elements.body.value,
+      category_id: event.target.elements.categories.value,
+    };
+
+    event.preventDefault();
+
+    fetch('http://localhost:3000/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data);
+      });
+  });
+}
 
 createCategories();
 
-const postForm = document.querySelector('.forma');
-postForm.addEventListener('submit', (event) => {
-  console.log('veikia');
-  const postData = {
-    title: event.target.elements.title.value,
-    body: event.target.elements.body.value,
-    category_id: event.target.elements.categories.value,
-  };
-
-  event.preventDefault();
-
-  fetch('http://localhost:3000/posts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(postData),
-  });
-});
+addForm();
