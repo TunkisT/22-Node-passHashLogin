@@ -55,8 +55,24 @@ async function deletePostById(deleteId) {
   }
 }
 
+async function addPostToDb(postData) {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const sql = `
+    INSERT INTO posts SET title = ?, body = ?, category_id = ?
+    `;
+    const { title, body, category_id } = postData;
+    const [result] = await connection.execute(sql, [title, body, category_id]);
+    await connection.close();
+    return result;
+  } catch (error) {
+    console.log('addPostToDb error ===', error);
+  }
+}
+
 module.exports = {
   getPostsFromDb,
   getPostsByCatId,
   deletePostById,
+  addPostToDb,
 };

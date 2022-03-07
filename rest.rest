@@ -35,3 +35,11 @@ GET http://localhost:3000/posts
 ###
 GET http://localhost:3000/posts/category/4
 ###
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "title": "TEST POST TITLE",
+    "body": "TEST BODY",
+    "category_id": 3
+}

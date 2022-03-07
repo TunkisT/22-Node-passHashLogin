@@ -2,6 +2,7 @@ const {
   getPostsFromDb,
   getPostsByCatId,
   deletePostById,
+  addPostToDb,
 } = require('../model/postModel');
 
 async function getPosts(req, res) {
@@ -36,8 +37,19 @@ async function deletePost(req, res) {
   res.json('Delete successful');
 }
 
+async function insertPost(req, res) {
+  const body = req.body;
+  const onePost = await addPostToDb(body);
+  if (onePost === false) {
+    res.status(500);
+    return;
+  }
+  res.json(onePost);
+}
+
 module.exports = {
   getPosts,
   postsByCatId,
   deletePost,
+  insertPost,
 };
