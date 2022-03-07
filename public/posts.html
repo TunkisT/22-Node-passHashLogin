@@ -27,8 +27,23 @@
 </head>
 <body>
     <div class="main-div">
-        <nav class="navigation"></nav>
-        <div class="cards"></div>
+        <nav class="navigation">
+            <button class="all-posts"><a href="posts.html">All posts</a></button>
+            <button class="add-post">Add post</button>
+        </nav>
+        <div class="cards">
+            <h1>Write post</h1>
+            <form class="form">
+                <input type="text" name="title" id="title" placeholder="title">
+                <input type="text" name="body" id="body" placeholder="body" >
+                <label>Select post category:
+                    <select class="categories" name="categories" multiple size="5">
+                      </optgroup>
+                    </select>
+                  </label>
+                  
+            </form>
+        </div>
     </div>
     
 </body>

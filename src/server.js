@@ -33,8 +33,10 @@ app.use(express.json());
 app.use(printBody);
 
 const postRoutes = require('./routes/postRoutes');
+const CategoriesRoutes = require('./routes/categoriesRoute');
 
 app.use('/', postRoutes);
+app.use('/', CategoriesRoutes);
 
 function printBody(req, res, next) {
   if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
