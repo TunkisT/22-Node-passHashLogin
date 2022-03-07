@@ -3,11 +3,12 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
-const { validateUser } = require('./middleware');
+const { validateUser, printBody } = require('./middleware');
 const { addUserDb, findUserByUsername } = require('./model/usermodel');
 
 // const mysql = require('mysql2/promise');
 // const dbConfig = require('./dbConfig');
+
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -37,13 +38,6 @@ const CategoriesRoutes = require('./routes/categoriesRoute');
 
 app.use('/', postRoutes);
 app.use('/', CategoriesRoutes);
-
-function printBody(req, res, next) {
-  if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
-    console.log('Request body we got:', req.body);
-  }
-  next();
-}
 
 app.get('/users', (req, res) => {
   res.json(users);

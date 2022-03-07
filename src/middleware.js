@@ -21,6 +21,15 @@ async function validateUser(req, res, next) {
     res.status(400).json(responseToSend);
   }
 }
+
+function printBody(req, res, next) {
+  if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
+    console.log('Request body we got:', req.body);
+  }
+  next();
+}
+
 module.exports = {
   validateUser,
+  printBody
 };
