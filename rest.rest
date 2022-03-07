@@ -29,3 +29,9 @@ Content-Type: application/json
     "age": 25,
     "gender": "male"
 }
+
+###
+GET http://localhost:3000/posts
+###
+GET http://localhost:3000/posts/category/4
+###

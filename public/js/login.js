@@ -10,6 +10,12 @@ forma.addEventListener('submit', (event) => {
   loginUser(loginData);
 });
 
+const query = window.location.search;
+if (query) {
+  const usernameFromQuery = query.split('=')[1];
+  forma.elements.username.value = usernameFromQuery;
+}
+
 async function loginUser(loginData) {
   console.log(loginData);
 

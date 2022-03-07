@@ -32,6 +32,10 @@ app.use(cors());
 app.use(express.json());
 app.use(printBody);
 
+const postRoutes = require('./routes/postRoutes');
+
+app.use('/', postRoutes);
+
 function printBody(req, res, next) {
   if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
     console.log('Request body we got:', req.body);
@@ -81,7 +85,13 @@ app.post('/register', validateUser, async (req, res) => {
   };
   const addResult = await await addUserDb(newUser);
   if (addResult === false) {
-    res.status(500);
+    const respond = {
+      success: false,
+      errors: {
+        message: 'Something went wrong',
+      },
+    };
+    res.status(500).json(respond);
     return;
   }
   res.json({
