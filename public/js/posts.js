@@ -8,8 +8,8 @@ function createCategories() {
     .then((res) => res.json())
     .then((data) => {
       data.map((cat) => {
-        console.log(cat.name);
-        categories.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+        console.log(cat.category_id);
+        categories.innerHTML += `<option value="${cat.category_id}">${cat.name}</option>`;
       });
     });
 }
@@ -54,8 +54,23 @@ allPosts.addEventListener('click', (event) => {
   createPosts();
 });
 
-addPosts.addEventListener('click', (event) => {
-  event.preventDefault();
-});
 
 createCategories();
+
+const postForm = document.querySelector('.forma');
+postForm.addEventListener('submit', (event) => {
+  console.log('veikia');
+  const postData = {
+    title: event.target.elements.title.value,
+    body: event.target.elements.body.value,
+    category_id: event.target.elements.categories.value,
+  };
+
+  event.preventDefault();
+
+  fetch('http://localhost:3000/posts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(postData),
+  });
+});
