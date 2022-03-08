@@ -4,23 +4,13 @@ const addPosts = document.querySelector('.add-post');
 const categories = document.querySelector('.categories');
 const categoriesBtns = document.querySelector('.categories-buttons');
 
-function createCategories() {
-  fetch('http://localhost:3000/categories')
-    .then((res) => res.json())
-    .then((data) => {
-      data.map((cat) => {
-        console.log(cat.category_id);
-        categories.innerHTML += `<option value="${cat.category_id}">${cat.name}</option>`;
-      });
-    });
-}
-
 function createPosts() {
   cardsDiv.innerHTML = '';
   fetch('http://localhost:3000/posts')
     .then((res) => res.json())
     .then((posts) => {
       posts.map((post) => {
+        console.log(post);
         const card = document.createElement('div');
         card.classList.add('card-div');
         card.innerHTML = `
@@ -54,6 +44,7 @@ function createCategoriesButtons() {
   fetch('http://localhost:3000/categories')
     .then((res) => res.json())
     .then((data) => {
+      console.log(data);
       data.map((cat) => {
         categoriesBtns.innerHTML += `<button class='cat' data-id='${cat.category_id}'>${cat.name}</button>`;
       });
@@ -69,6 +60,7 @@ function createPostsById() {
     fetch(`http://localhost:3000/posts/category/${buttonId}`)
       .then((res) => res.json())
       .then((posts) => {
+        console.log(posts.length);
         posts.map((post) => {
           console.log(post);
           const card = document.createElement('div');
@@ -83,43 +75,6 @@ function createPostsById() {
       });
   });
 }
-
-allPosts.addEventListener('click', (event) => {
-  event.preventDefault();
-  createPosts();
-});
-
-addPosts.addEventListener('click', (event) => {
-  window.location.reload();
-});
-
-function addForm() {
-  const postForm = document.querySelector('.forma');
-  postForm.addEventListener('submit', (event) => {
-    console.log('veikia');
-    const postData = {
-      title: event.target.elements.title.value,
-      body: event.target.elements.body.value,
-      category_id: event.target.elements.categories.value,
-    };
-
-    event.preventDefault();
-
-    fetch('http://localhost:3000/posts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(postData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert(data);
-      });
-  });
-}
-
-// createCategories();
-
-// addForm();
 
 createPosts();
 
