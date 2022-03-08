@@ -5,10 +5,11 @@ const {
   deletePost,
   insertPost,
 } = require('../controller/postController');
+const { validatePost } = require('../middleware');
 const postRoutes = express.Router();
 
 postRoutes.get('/posts', getPosts);
-postRoutes.post('/posts', insertPost);
+postRoutes.post('/posts', validatePost, insertPost);
 postRoutes.get('/posts/category/:id', postsByCatId);
 postRoutes.delete('/posts/delete/:id', deletePost);
 

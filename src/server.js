@@ -3,14 +3,15 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 const { validateUser, printBody } = require('./middleware');
 const { addUserDb, findUserByUsername } = require('./model/usermodel');
 
 // const mysql = require('mysql2/promise');
 // const dbConfig = require('./dbConfig');
 
-
 const PORT = process.env.SERVER_PORT || 3000;
+const jwtSecret = process.env.JWT_TOKEN_SECRET;
 
 const app = express();
 
@@ -57,9 +58,13 @@ app.post('/login', validateUser, async (req, res) => {
   console.log('userObjFound ===', [userObjFound]);
 
   if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
+    const loggedInUserObj = { username };
+    const token = jwt.sign(loggedInUserObj, jwtSecret);
+    console.log('token ===', token);
     res.json({
       success: true,
       msg: 'Login successful',
+      token,
     });
   } else {
     res.status(400).json({
