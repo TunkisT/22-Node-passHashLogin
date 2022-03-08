@@ -33,9 +33,11 @@ async function loginUser(loginData) {
   }
 
   if (respInJs.success === true) {
-    window.location.replace('profile.html');
+    localStorage.setItem('login_token', respInJs.token);
+    window.location.replace('addPost.html');
   }
 }
+
 function handelErrors(errorArray) {
   console.log('errorArray ===', errorArray);
   errorsContainer.innerHTML = '';

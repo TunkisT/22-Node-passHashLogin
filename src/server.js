@@ -4,7 +4,7 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const { validateUser, printBody } = require('./middleware');
+const { printBody, validateUser } = require('./middleware');
 const { addUserDb, findUserByUsername } = require('./model/usermodel');
 
 // const mysql = require('mysql2/promise');
@@ -33,6 +33,7 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 app.use(printBody);
+// app.use(validateUser);
 
 const postRoutes = require('./routes/postRoutes');
 const CategoriesRoutes = require('./routes/categoriesRoute');
@@ -59,7 +60,7 @@ app.post('/login', validateUser, async (req, res) => {
 
   if (bcrypt.compareSync(password, userObjFound.password) && userObjFound) {
     const loggedInUserObj = { username };
-    const token = jwt.sign(loggedInUserObj, jwtSecret);
+    const token = jwt.sign(loggedInUserObj, jwtSecret, { expiresIn: '1h' });
     console.log('token ===', token);
     res.json({
       success: true,

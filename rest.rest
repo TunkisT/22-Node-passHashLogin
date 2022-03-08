@@ -37,9 +37,10 @@ GET http://localhost:3000/posts/category/4
 ###
 POST http://localhost:3000/posts
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1pa2UiLCJpYXQiOjE2NDY3NDYwMTMsImV4cCI6MTY0Njc0OTYxM30.YVZmGESJ4vqqAQBaVXRYkzDN2cVi9wJ6BK0qJLzNqpk
 
 {
     "title": "TEST POST TITLE",
     "body": "TEST BODY",
-    "category_id": 0
+    "category_id": 3
 }

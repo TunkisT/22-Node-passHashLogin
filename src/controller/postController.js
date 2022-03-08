@@ -39,6 +39,8 @@ async function deletePost(req, res) {
 
 async function insertPost(req, res) {
   const body = req.body;
+  const username = req.username
+  console.log('username ===', username);
   const onePost = await addPostToDb(body);
   if (onePost === false) {
     res.status(500);

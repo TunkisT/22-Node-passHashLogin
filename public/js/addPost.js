@@ -14,10 +14,15 @@ function addForm() {
     };
 
     event.preventDefault();
+    const token = localStorage.getItem('login_token');
+    if (token === null) throw new Error('token not found');
 
     fetch('http://localhost:3000/posts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(postData),
     })
       .then((res) => res.json())
