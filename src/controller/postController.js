@@ -32,7 +32,7 @@ async function deletePost(req, res) {
     return;
   }
   if (onePost.affectedRows !== 1) {
-    res.json('No cars deleted');
+    res.json('No posts deleted');
   }
   res.json('Delete successful');
 }

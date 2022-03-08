@@ -2,10 +2,7 @@ const cardsDiv = document.querySelector('.cards');
 const allPosts = document.querySelector('.all-posts');
 const addPosts = document.querySelector('.add-post');
 const categories = document.querySelector('.categories');
-
-addPosts.addEventListener('click', (event) => {
-  event.preventDefault();
-});
+const categoriesBtns = document.querySelector('.categories-buttons');
 
 function createCategories() {
   fetch('http://localhost:3000/categories')
@@ -53,9 +50,47 @@ function createPosts() {
   });
 }
 
+function createCategoriesButtons() {
+  fetch('http://localhost:3000/categories')
+    .then((res) => res.json())
+    .then((data) => {
+      data.map((cat) => {
+        categoriesBtns.innerHTML += `<button class='cat' data-id='${cat.category_id}'>${cat.name}</button>`;
+      });
+    });
+}
+
+function createPostsById() {
+  categoriesBtns.addEventListener('click', (event) => {
+    event.preventDefault();
+    cardsDiv.innerHTML = '';
+    const buttonId = event.target.dataset.id;
+    console.log('buttonId ===', buttonId);
+    fetch(`http://localhost:3000/posts/category/${buttonId}`)
+      .then((res) => res.json())
+      .then((posts) => {
+        posts.map((post) => {
+          console.log(post);
+          const card = document.createElement('div');
+          card.classList.add('card-div');
+          card.innerHTML = `
+          <h3>Title: ${post.title}</h3>
+          <h4>Category: ${post.category}</h4>
+          <p>${post.body}</p>
+          `;
+          cardsDiv.append(card);
+        });
+      });
+  });
+}
+
 allPosts.addEventListener('click', (event) => {
   event.preventDefault();
   createPosts();
+});
+
+addPosts.addEventListener('click', (event) => {
+  window.location.reload();
 });
 
 function addForm() {
@@ -82,6 +117,12 @@ function addForm() {
   });
 }
 
-createCategories();
+// createCategories();
 
-addForm();
+// addForm();
+
+createPosts();
+
+createCategoriesButtons();
+
+createPostsById();
