@@ -45,7 +45,8 @@ async function insertPost(req, res) {
     return;
   }
   if (onePost.affectedRows !== 1) {
-    res.json('No add problem');
+    res.json('No post created');
+    return;
   }
   res.json('You added new post!');
 }
