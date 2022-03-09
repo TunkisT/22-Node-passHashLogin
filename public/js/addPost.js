@@ -37,7 +37,6 @@ function createCategories() {
     .then((res) => res.json())
     .then((data) => {
       data.map((cat) => {
-        console.log(cat.category_id);
         categories.innerHTML += `<option value="${cat.category_id}">${cat.name}</option>`;
       });
     });

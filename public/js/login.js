@@ -35,6 +35,7 @@ async function loginUser(loginData) {
   if (respInJs.success === true) {
     localStorage.setItem('login_token', respInJs.token);
     window.location.replace('addPost.html');
+    alert(`${respInJs.msg}`)
   }
 }
 

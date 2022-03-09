@@ -26,7 +26,7 @@ async function validateUser(req, res, next) {
 async function validatePost(req, res, next) {
   const schemaLogin = Joi.object({
     title: Joi.string().min(3).max(50).required(),
-    body: Joi.string().min(5).required(),
+    body: Joi.string().min(3).required(),
     category_id: Joi.number().min(1).max(10).required(),
   });
 

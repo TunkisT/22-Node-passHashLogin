@@ -33,7 +33,6 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 app.use(printBody);
-// app.use(validateUser);
 
 const postRoutes = require('./routes/postRoutes');
 const CategoriesRoutes = require('./routes/categoriesRoute');
@@ -64,7 +63,7 @@ app.post('/login', validateUser, async (req, res) => {
     console.log('token ===', token);
     res.json({
       success: true,
-      msg: 'Login successful',
+      msg: `Login successful. Hello ${username}`,
       token,
     });
   } else {
@@ -128,3 +127,6 @@ app.post('/validate', async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+
+// susigeneruot random password
+// node -> require('crypto').randomBytes(64).toString('hex')

@@ -11,7 +11,7 @@ forma.addEventListener('submit', (event) => {
 });
 
 async function registerUser(registerData) {
-  console.log(registerData);
+  // console.log(registerData);
 
   const resp = await fetch('http://localhost:3000/register', {
     method: 'POST',
@@ -20,10 +20,10 @@ async function registerUser(registerData) {
   });
 
   const respInJs = await resp.json();
-  console.log('respInJs ===', respInJs);
 
   if (respInJs.success === false) {
     handelErrors(respInJs.errors);
+    console.log('respInJs.errors ===', respInJs.errors);
   }
 
   if (respInJs.success === true) {
@@ -34,7 +34,6 @@ async function registerUser(registerData) {
 function handelErrors(errorArray) {
   console.log('errorArray ===', errorArray);
   errorsContainer.innerHTML = '';
-  errorArray.forEach((err) => {
-    errorsContainer.innerHTML += `<p>${err.message}</p>`;
-  });
+
+  errorsContainer.innerHTML += `<p>${errorArray.message}</p>`;
 }

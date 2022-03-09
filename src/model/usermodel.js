@@ -23,7 +23,7 @@ async function findUserByUsername(username) {
     const connection = await mysql.createConnection(dbConfig);
     const sql = `SELECT * FROM users WHERE username = ?`;
 
-    const [userFound] = await connection.execute(sql, [username]);
+    const [userFound] = await connection.query(sql, [username]);
     await connection.close();
 
     return userFound;
